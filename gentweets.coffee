@@ -48,6 +48,10 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
   tweets = JSON.parse data
   prev_date = new Date("1970-01-01")
   prev_ord = 0
+  tweets.sort (l, r) ->
+    dl = new Date(l.created_at).valueOf()
+    dr = new Date(r.created_at).valueOf()
+    return dl - dr
   for tweet in tweets
     orig_date = new Date(tweet.created_at)
     if date2days(prev_date) == date2days(orig_date)
