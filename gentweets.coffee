@@ -26,12 +26,18 @@ ymdptod = (y,m,d) ->
 date2days = (date) ->
   ymdptod date.getFullYear(), date.getMonth(), date.getDate()
 
+lyrs = (y) -> Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400)
+
+rellyrs = (y) -> lyrs(y) - lyrs(1970)
+
+year2days = (yr) -> ((yr - 1970) * 365) + rellyrs(yr)
+
 dateprint = (ord, orig_date) ->
   return (error, jadedat) ->
       if (error)
         throw error
-      console.log ((newbase60 date2days(orig_date)) + "/" + (newbase60 ord))
-      console.log "http://flaviusb.net/tweets/#{orig_date.getYear()}/#{orig_date.getMonth()}/#{orig_date.getDay()}/#{ord}/"
+      console.log ((newbase60 (year2days(orig_date.getFullYear()) + date2days(orig_date))) + "/" + (newbase60 ord))
+      console.log "http://flaviusb.net/tweets/#{orig_date.getFullYear()}/#{orig_date.getMonth() + 1}/#{orig_date.getDate()}/#{ord}/"
       console.log jadedat
 
 str2hashtags = (str) ->
