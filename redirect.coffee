@@ -50,30 +50,6 @@ choose_path = (req, res, routes) ->
       break
   fourohfour(req, res, url)
 
-getJSONCharsheet = (req, res, name) ->
-  riakdb.get 'charsheets', name, (err, cs) ->
-    if err
-      fourohfour(res, 'character sheet for: ' + name)
-    else
-      res.writeHeader 200, 'Content-Type': 'application/json'
-      res.end JSON.stringify(cs)
-
-
-
-
-
-
-myRoutes = [
-  [ /^\/editcharsheet\/([a-zA-Z]*)$/, editCharsheet ]
-  [ /^\/charsheet\/([a-zA-Z]*)[.\/]xml$/, getCharsheet ]
-  [ /^\/charsheet\/([a-zA-Z]*)[.\/]json$/, getJSONCharsheet ]
-  [ /^\/charsheet\/([a-zA-Z]*)[.\/]png$/, showCharsheetPng ]
-  [ /^\/charsheet\/([a-zA-Z]*)[.\/]pdf$/, showCharsheetPdf ]
-  [ /^\/$/, index ]
-  [ /^(.*)$/, fourohfour ]
-]
-
-
 server = http.createServer (req, res) ->
   choose_path(req, res, myRoutes)
 
