@@ -51,7 +51,7 @@ choose_path = (req, res, routes) ->
   fourohfour(req, res, url)
 
 server = http.createServer (req, res) ->
-  choose_path(req, res, myRoutes)
+  choose_path(req, res, routes)
 
 server.listen 8080
 
