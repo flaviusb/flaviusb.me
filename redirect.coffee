@@ -1,6 +1,7 @@
-http = require 'http'
-urls = require 'url'
+http        = require 'http'
+urls        = require 'url'
 querystring = require 'querystring'
+fs          = require 'fs'
 
 jade = require 'jade'
 
