@@ -52,8 +52,7 @@ choose_path = (req, res) ->
     if url is i
       j req, res
       return
-  for i, j in routes
-    #it = i(url)
+  for [i, j] in routes
     if url is i
       threeohone(req, res, j)
       return
