@@ -88,7 +88,7 @@ writetweets = (ord, orig_date) ->
       mkdirs (htdocsbase.tweets + redirend), (err, done) ->
         if err? then console.log err
         if done? then console.log done
-      fs.writeFile (htdocsbase.tweets + redirend + "index.html") jadedat
+      fs.writeFile (htdocsbase.tweets + redirend + "index.html"), jadedat
       
 
 str2hashtags = (str) ->
@@ -100,7 +100,7 @@ str2hashtags = (str) ->
   ret
 
 fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
-  if (err)
+  if err?
     throw err
   tweets = JSON.parse data
   prev_date = new Date("1970-01-01")
