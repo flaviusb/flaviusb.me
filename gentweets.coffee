@@ -76,7 +76,7 @@ writetweets = (ord, orig_date) ->
       redirbase = "http://flaviusb.net/tweets/"
       redirend  = "#{orig_date.getFullYear()}/#{orig_date.getMonth() + 1}/#{orig_date.getDate()}/#{ord}/"
       console.log redirfrom
-      console.log redirto
+      console.log redirend
       routes.push [redirfrom, (redirbase + redirend)]
       console.log jadedat
       mkdirs (htdocsbase.tweets + redirend)
