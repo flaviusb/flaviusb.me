@@ -45,23 +45,25 @@ mkdirs = (dirname, callback) ->
   pathsCreated = []
   pathsFound = []
   makeNext = () ->
+    console.log pathsFound
     fn = pathsFound.pop()
     console.log "makenext: #{fn}"
     if not fn?
       if callback? then callback(null, pathsCreated)
     else
-    fs.mkdir fn, (err) ->
-      if not err?
-        pathsCreated.push(fn)
-        makeNext()
-      else if callback?
-        callback(err)
+      fs.mkdir fn, 0777, (err, data) ->
+        if not err?
+          pathsCreated.push(fn)
+          makeNext()
+        else if callback?
+          callback(err)
   findNext = (fn) ->
     console.log "findnext: #{fn}"
     fs.stat fn, (err, stats) ->
       if err?
-        if (err.errno is process.ENOENT)
+        if err.errno is 2
           pathsFound.push(fn)
+          console.log "findnext: [#{pathsFound}]"
           findNext(path.dirname(fn))
         else if callback?
           callback err
@@ -70,6 +72,7 @@ mkdirs = (dirname, callback) ->
       else if callback?
         callback(new Error('Unable to create directory at '+fn))
   findNext(dirname)
+
 
 writetweets = (ord, orig_date) ->
   return (error, jadedat) ->
