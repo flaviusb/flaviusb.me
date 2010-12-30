@@ -79,8 +79,9 @@ writetweets = (ord, orig_date) ->
       console.log redirend
       routes.push [redirfrom, (redirbase + redirend)]
       console.log jadedat
-      mkdirs (htdocsbase.tweets + redirend)
-      fs.writeFile (htdocsbase.tweets + redirend + "index.html") jadeat
+      mkdirs (htdocsbase.tweets + redirend), (err) ->
+        console.log err
+      fs.writeFile (htdocsbase.tweets + redirend + "index.html") jadedat
       
 
 str2hashtags = (str) ->
