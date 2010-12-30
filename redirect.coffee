@@ -40,14 +40,21 @@ regenRoutes = (req, res) ->
     routes = JSON.parse(data)
     done req, res
   
+commands = [
+  "/command/regenroutes": regenRoutes
+]
 
 choose_path = (req, res, routes) ->
   url = urls.parse(req.url).pathname
+  for [i, j] in commands
+    if url is i
+      j req, res
+      return
   for [i, j] in routes
     #it = i(url)
     if url is i
       threeohone(req, res, j)
-      break
+      return
   fourohfour(req, res, url)
 
 server = http.createServer (req, res) ->
