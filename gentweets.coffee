@@ -1,4 +1,5 @@
-fs = require 'fs'
+fs   = require 'fs'
+path = require 'path'
 jade = require 'jade'
 
 routes = []
