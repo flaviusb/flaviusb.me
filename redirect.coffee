@@ -40,18 +40,18 @@ regenRoutes = (req, res) ->
     routes = JSON.parse(data)
     done req, res
   
-commands = [
+commands = {
   "/command/regenroutes": regenRoutes
-]
+}
 
 choose_path = (req, res) ->
   url = urls.parse(req.url).pathname
   console.log url
-  for [i, j] in commands
+  for i, j of commands
     if url is i
       j req, res
       return
-  for [i, j] in routes
+  for i, j in routes
     #it = i(url)
     if url is i
       threeohone(req, res, j)
