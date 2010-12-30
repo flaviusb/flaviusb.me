@@ -87,8 +87,9 @@ writetweets = (ord, orig_date) ->
       console.log jadedat
       mkdirs (htdocsbase.tweets + redirend), (err, done) ->
         if err? then console.log err
-        if done? then console.log done
-      fs.writeFile (htdocsbase.tweets + redirend + "index.html"), jadedat
+        if done?
+          console.log done
+          fs.writeFile (htdocsbase.tweets + redirend + "index.html"), jadedat
       
 
 str2hashtags = (str) ->
