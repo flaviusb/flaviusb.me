@@ -80,7 +80,7 @@ writetweets = (ord, orig_date) ->
   return (error, jadedat) ->
       if (error)
         throw error
-      redirfrom = ((newbase60 (year2days(orig_date.getFullYear()) + date2days(orig_date))) + "/" + (newbase60 ord))
+      redirfrom = ("/t/" + (newbase60 (year2days(orig_date.getFullYear()) + date2days(orig_date))) + "/" + (newbase60 ord))
       redirbase = "http://flaviusb.net/tweets/"
       redirend  = "#{orig_date.getFullYear()}/#{orig_date.getMonth() + 1}/#{orig_date.getDate()}/#{ord}/"
       console.log redirfrom
