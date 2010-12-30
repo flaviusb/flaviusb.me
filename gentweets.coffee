@@ -4,6 +4,8 @@ jade = require 'jade'
 
 routes = []
 
+stupid_count = 1
+
 htdocsbase = {
   tweets: '/var/www/flaviusb.net/tweets/',
   redirs: '/home/flaviusb/code/flaviusb.me/'
@@ -84,6 +86,7 @@ writetweets = (ord, orig_date) ->
       console.log redirfrom
       console.log redirend
       routes.push [redirfrom, (redirbase + redirend)]
+      stupid_count -= 1
       console.log jadedat
       mkdirs (htdocsbase.tweets + redirend), (err, done) ->
         if err? then console.log err
@@ -118,5 +121,17 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
       prev_ord = 0
     tweet.created_at = (new Date(tweet.created_at)).toLocaleString()
     tweet.tags = str2hashtags tweet.text
+    stupid_count += 1
     jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(prev_ord, orig_date)
     prev_date = orig_date
+  stupid_count -= 1
+
+write_routes = () ->
+  if stupid_count is 0
+    fs.writeFile (htdocsbase.redirs + 'redirects.json'), JSON.stringify routes
+    console.log 'done'
+  else
+    console.log 'tick'
+    setTimeout write_routes, 100
+
+setTimeout write_routes, 400
