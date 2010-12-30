@@ -46,6 +46,7 @@ mkdirs = (dirname, callback) ->
   pathsFound = []
   makeNext = () ->
     fn = pathsFound.pop()
+    console.log "makenext: #{fn}"
     if not fn?
       if callback? then callback(null, pathsCreated)
     else
@@ -56,6 +57,7 @@ mkdirs = (dirname, callback) ->
       else if callback?
         callback(err)
   findNext = (fn) ->
+    console.log "findnext: #{fn}"
     fs.stat fn, (err, stats) ->
       if err?
         if (err.errno is process.ENOENT)
