@@ -44,8 +44,9 @@ commands = [
   "/command/regenroutes": regenRoutes
 ]
 
-choose_path = (req, res, routes) ->
+choose_path = (req, res) ->
   url = urls.parse(req.url).pathname
+  console.log url
   for [i, j] in commands
     if url is i
       j req, res
@@ -58,7 +59,7 @@ choose_path = (req, res, routes) ->
   fourohfour(req, res, url)
 
 server = http.createServer (req, res) ->
-  choose_path(req, res, routes)
+  choose_path(req, res)
 
 server.listen 8080
 
