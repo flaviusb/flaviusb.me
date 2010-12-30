@@ -47,7 +47,6 @@ commands = {
 
 choose_path = (req, res) ->
   url = urls.parse(req.url).pathname
-  console.log url
   for i, j of commands
     if url is i
       j req, res
