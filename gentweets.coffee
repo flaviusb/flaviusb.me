@@ -1,6 +1,13 @@
 fs = require 'fs'
 jade = require 'jade'
 
+routes = []
+
+htdocsbase = {
+  tweets: '/var/www/flaviusb.net/tweets/',
+  redirs: '/home/flaviusb/code/flaviusb.me/'
+}
+
 newbase60 = (num) ->
   ret = ""
   if num is 0 or not num?
@@ -32,13 +39,49 @@ rellyrs = (y) -> lyrs(y) - lyrs(1970)
 
 year2days = (yr) -> ((yr - 1970) * 365) + rellyrs(yr)
 
-dateprint = (ord, orig_date) ->
+
+mkdirs = (dirname, callback) ->
+  pathsCreated = []
+  pathsFound = []
+  makeNext = () ->
+    fn = pathsFound.pop()
+    if not fn?
+      if callback? then callback(null, pathsCreated)
+    else
+    fs.mkdir fn, (err) ->
+      if not err?
+        pathsCreated.push(fn)
+        makeNext()
+      else if callback?
+        callback(err)
+  findNext = (fn) ->
+    fs.stat fn, (err, stats) ->
+      if err?
+        if (err.errno is process.ENOENT)
+          pathsFound.push(fn)
+          findNext(path.dirname(fn))
+        else if callback?
+          callback err
+      else if (stats.isDirectory())
+        makeNext()
+      else if callback?
+        callback(new Error('Unable to create directory at '+fn))
+  findNext(dirname)
+
+writetweets = (ord, orig_date) ->
   return (error, jadedat) ->
       if (error)
         throw error
-      console.log ((newbase60 (year2days(orig_date.getFullYear()) + date2days(orig_date))) + "/" + (newbase60 ord))
-      console.log "http://flaviusb.net/tweets/#{orig_date.getFullYear()}/#{orig_date.getMonth() + 1}/#{orig_date.getDate()}/#{ord}/"
+      redirfrom = ((newbase60 (year2days(orig_date.getFullYear()) + date2days(orig_date))) + "/" + (newbase60 ord))
+      redirbase = "http://flaviusb.net/tweets/"
+      redirend  = "#{orig_date.getFullYear()}/#{orig_date.getMonth() + 1}/#{orig_date.getDate()}/#{ord}/"
+      console.log redirfrom
+      console.log redirto
+      routes.push [redirfrom, (redirbase + redirend)]
       console.log jadedat
+      mkdirs (htdocsbase.tweets + redirend)
+      fs.writeFile (htdocsbase.tweets + redirend + "index.html") jadeat
+      
 
 str2hashtags = (str) ->
   ret = []
@@ -66,5 +109,5 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
       prev_ord = 0
     tweet.created_at = (new Date(tweet.created_at)).toLocaleString()
     tweet.tags = str2hashtags tweet.text
-    jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, dateprint(prev_ord, orig_date)
+    jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(prev_ord, orig_date)
     prev_date = orig_date
