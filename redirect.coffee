@@ -25,9 +25,9 @@ index = (req, res) ->
     res.write data
     res.end()
 
-done = (req, res) ->
+done = (req, res, url) ->
   res.writeHeader 200, 'Content-Type': 'text/html'
-  options = locals: {}
+  options = locals: { url: url }
   jade.renderFile __dirname + "/done.jade", options, (error, data) ->
     res.write data
     res.end()
@@ -39,7 +39,7 @@ regenRoutes = (req, res) ->
     if (err)
       throw err
     routes = JSON.parse(data)
-    done req, res
+    done req, res, "/command/regenroutes"
   
 commands = {
   "/command/regenroutes": regenRoutes
