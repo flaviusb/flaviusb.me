@@ -136,6 +136,8 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
     tweet2.longurl  = getLongSlugInfix(curr_date, prev_ord)
     if prev_tweet?
       tweet2.prev_longurl = prev_tweet.longurl
+    else
+      tweet2.prev_longurl = ""
     prev_date = curr_date
     prev_tweet = tweet2
     tweets2.push tweet2
@@ -148,6 +150,8 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
   for tweet in tweets
     if prev_tweet?
       tweet.next_longurl = prev_tweet.longurl
+    else
+      tweet.next_longurl = ""
     prev_tweet = tweet
     stupid_count += 1
     jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
