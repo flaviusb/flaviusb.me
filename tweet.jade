@@ -18,15 +18,15 @@ html(lang='en')
         - var tagurl = "http://flaviusb.net/hashtags/" + tag
         a(rel="tag", href=tagurl)= tag
     p
-      - if (prev_longurl != null)
+      - if (prev_longurl != "")
         -var total_prev_longurl = "http://flaviusb.net/tweets/" + prev_longurl
-        a(href=total_prev_longurl) Prev
+          a(href=total_prev_longurl) Prev
       - else
         #grey Prev
       | &nbsp; | &nbsp;
-      - if (next_longurl != null)
+      - if (next_longurl != "")
         - var total_next_longurl = "http://flaviusb.net/tweets/" + next_longurl
-        a(href=total_Next_longurl) Next
+          a(href=total_Next_longurl) Next
       - else
         #grey Next
     - var total_longurl = "http://flaviusb.net/tweets/" + longurl
