@@ -33,7 +33,7 @@ isleap = (y) ->
 
 ymdptod = (y,m,d) ->
   md = [[0,31,59,90,120,151,181,212,243,273,304,334],[0,31,60,91,121,152,182,213,244,274,305,335]]
-  return md[if isleap(y) then 1 else 0][m-1]+d
+  return md[if isleap(y) then 1 else 0][m]+d
 
 date2days = (date) ->
   ymdptod date.getFullYear(), date.getMonth(), date.getDate()
