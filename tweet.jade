@@ -18,6 +18,24 @@ html(lang='en')
         - var tagurl = "http://flaviusb.net/hashtags/" + tag
         a(rel="tag", href=tagurl)= tag
     p
+      - if (prev_longurl != null)
+        -var total_prev_longurl = "http://flaviusb.net/tweets/" + prev_longurl
+        a(href=total_prev_longurl) Prev
+      - else
+        #grey Prev
+      | &nbsp; | &nbsp;
+      - if (next_longurl != null)
+        - var total_next_longurl = "http://flaviusb.net/tweets/" + next_longurl
+        a(href=total_Next_longurl) Next
+      - else
+        #grey Next
+    - var total_longurl = "http://flaviusb.net/tweets/" + longurl
+      p#longurl #{total_longurl}
+    - var total_shorturl = "http://flaviusb.me" + shorturl
+      p#shorturl #{total_shorturl}
+    p
       a(href="http://flaviusb.net") Home
+      | &nbsp; | &nbsp; 
       a(rel="index", href="http://flaviusb.net/blog") Blog
+      | &nbsp; | &nbsp; 
       a(href="http://github.com/flaviusb") Code

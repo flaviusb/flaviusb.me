@@ -2,6 +2,8 @@ fs   = require 'fs'
 path = require 'path'
 jade = require 'jade'
 
+process.env.TZ = 'NZ'
+
 routes = []
 
 stupid_count = 1
@@ -75,19 +77,24 @@ mkdirs = (dirname, callback) ->
         callback(new Error('Unable to create directory at '+fn))
   findNext(dirname)
 
+getShortSlugInfix = (orig_date, ord) ->
+  ((newbase60 (year2days(orig_date.getFullYear()) + date2days(orig_date))) + "/" + (newbase60 ord))
 
-writetweets = (ord, orig_date) ->
+getLongSlugInfix = (orig_date, ord) ->
+  "#{orig_date.getFullYear()}/#{orig_date.getMonth() + 1}/#{orig_date.getDate()}/#{ord}/"
+
+writetweets = (redirfrom, redirend) ->
   return (error, jadedat) ->
       if (error)
         throw error
-      redirfrom = ("/t/" + (newbase60 (year2days(orig_date.getFullYear()) + date2days(orig_date))) + "/" + (newbase60 ord))
+      #redirfrom = ("/t/" + getShortSlugInfix(orig_date, ord))
       redirbase = "http://flaviusb.net/tweets/"
-      redirend  = "#{orig_date.getFullYear()}/#{orig_date.getMonth() + 1}/#{orig_date.getDate()}/#{ord}/"
-      console.log redirfrom
-      console.log redirend
+      #redirend  = getLongSlugInfix(orig_date, ord)
+      #console.log redirfrom
+      #console.log redirend
       routes.push [redirfrom, (redirbase + redirend)]
       stupid_count -= 1
-      console.log jadedat
+      #console.log jadedat
       mkdirs (htdocsbase.tweets + redirend), (err, done) ->
         if err? then console.log err
         if done?
@@ -109,21 +116,36 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
   tweets = JSON.parse data
   prev_date = new Date("1970-01-01")
   prev_ord = 0
+  # Iterate forwards to make urls and add backlinks, then backwards to add forwardlinks and render
   tweets.sort (l, r) ->
     dl = new Date(l.created_at).valueOf()
     dr = new Date(r.created_at).valueOf()
     return dl - dr
+  prev_tweet = null
   for tweet in tweets
-    orig_date = new Date(tweet.created_at)
-    if date2days(prev_date) == date2days(orig_date)
+    curr_date = new Date(tweet.created_at)
+    if getShortSlugInfix(prev_date, 0) is getShortSlugInfix(curr_date, 0)
       prev_ord += 1
     else
       prev_ord = 0
-    tweet.created_at = (new Date(tweet.created_at)).toLocaleString()
-    tweet.tags = str2hashtags tweet.text
+    tweet.tags     = str2hashtags tweet.text
+    tweet.shorturl = ("/t/" + getShortSlugInfix(curr_date, prev_ord))
+    tweet.longurl  = getLongSlugInfix(curr_date, prev_ord)
+    if prev_tweet?
+      tweet.prev_longurl = prev_tweet.longurl
+    prev_date = curr_date
+    prev_tweet = tweet
+  tweets.sort (l, r) ->
+    dl = new Date(l.created_at).valueOf()
+    dr = new Date(r.created_at).valueOf()
+    return dr - dl
+  prev_tweet = null
+  for tweet in tweets
+    if prev_tweet?
+      tweet.next_longurl = prev_tweet.longurl
+    prev_tweet = tweet
     stupid_count += 1
-    jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(prev_ord, orig_date)
-    prev_date = orig_date
+    jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
   stupid_count -= 1
 
 write_routes = () ->
