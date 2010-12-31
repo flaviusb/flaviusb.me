@@ -90,11 +90,11 @@ writetweets = (redirfrom, redirend) ->
       #redirfrom = ("/t/" + getShortSlugInfix(orig_date, ord))
       redirbase = "http://flaviusb.net/tweets/"
       #redirend  = getLongSlugInfix(orig_date, ord)
-      #console.log redirfrom
-      #console.log redirend
+      console.log redirfrom
+      console.log redirend
       routes.push [redirfrom, (redirbase + redirend)]
       stupid_count -= 1
-      #console.log jadedat
+      console.log jadedat
       mkdirs (htdocsbase.tweets + redirend), (err, done) ->
         if err? then console.log err
         if done?
