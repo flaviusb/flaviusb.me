@@ -122,19 +122,24 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
     dr = new Date(r.created_at).valueOf()
     return dl - dr
   prev_tweet = null
+  tweets2 = []
   for tweet in tweets
-    curr_date = new Date(tweet.created_at)
+    tweet2 = tweet
+    console.log tweet2
+    curr_date = new Date(tweet2.created_at)
     if getShortSlugInfix(prev_date, 0) is getShortSlugInfix(curr_date, 0)
       prev_ord += 1
     else
       prev_ord = 0
-    tweet.tags     = str2hashtags tweet.text
-    tweet.shorturl = ("/t/" + getShortSlugInfix(curr_date, prev_ord))
-    tweet.longurl  = getLongSlugInfix(curr_date, prev_ord)
+    tweet2.tags     = str2hashtags tweet2.text
+    tweet2.shorturl = ("/t/" + getShortSlugInfix(curr_date, prev_ord))
+    tweet2.longurl  = getLongSlugInfix(curr_date, prev_ord)
     if prev_tweet?
-      tweet.prev_longurl = prev_tweet.longurl
+      tweet2.prev_longurl = prev_tweet.longurl
     prev_date = curr_date
-    prev_tweet = tweet
+    prev_tweet = tweet2
+    tweets2.push tweet2
+  tweets = tweets2
   tweets.sort (l, r) ->
     dl = new Date(l.created_at).valueOf()
     dr = new Date(r.created_at).valueOf()
