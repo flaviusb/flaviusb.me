@@ -122,6 +122,7 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
   tweets2 = []
   for tweet in tweets
     tweet2 = tweet
+    tweet2.created_at = (new Date(tweet2.created_at)).toLocaleString()
     console.log tweet2
     curr_date = new Date(tweet2.created_at)
     if getShortSlugInfix(prev_date, 0) is getShortSlugInfix(curr_date, 0)
