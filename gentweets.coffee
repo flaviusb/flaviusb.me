@@ -2,7 +2,7 @@ fs   = require 'fs'
 path = require 'path'
 jade = require 'jade'
 
-process.env.TZ = 'NZ'
+process.env.TZ = 'Pacific/Auckland'
 
 routes = []
 
@@ -51,7 +51,6 @@ mkdirs = (dirname, callback) ->
   makeNext = () ->
     console.log pathsFound
     fn = pathsFound.pop()
-    console.log "makenext: #{fn}"
     if not fn?
       if callback? then callback(null, pathsCreated)
     else
@@ -62,12 +61,10 @@ mkdirs = (dirname, callback) ->
         else if callback?
           callback(err)
   findNext = (fn) ->
-    console.log "findnext: #{fn}"
     fs.stat fn, (err, stats) ->
       if err?
         if err.errno is 2
           pathsFound.push(fn)
-          console.log "findnext: [#{pathsFound}]"
           findNext(path.dirname(fn))
         else if callback?
           callback err
