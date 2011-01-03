@@ -51,7 +51,7 @@ mkdirs = (dirname, callback) ->
   pathsCreated = []
   pathsFound = []
   makeNext = () ->
-    console.log pathsFound
+    #console.log pathsFound
     fn = pathsFound.pop()
     if not fn?
       if callback? then callback(null, pathsCreated)
@@ -89,23 +89,26 @@ writetweets = (redirfrom, redirend) ->
       #redirfrom = ("/t/" + getShortSlugInfix(orig_date, ord))
       redirbase = "http://flaviusb.net/tweets/"
       #redirend  = getLongSlugInfix(orig_date, ord)
-      console.log redirfrom
-      console.log redirend
+      #console.log redirfrom
+      #console.log redirend
       routes.push [redirfrom, (redirbase + redirend)]
       stupid_count -= 1
-      console.log jadedat
+      #console.log jadedat
       mkdirs (htdocsbase.tweets + redirend), (err, done) ->
         if err? then console.log err
         if done?
-          console.log done
+          #console.log done
           fs.writeFile (htdocsbase.tweets + redirend + "index.html"), jadedat
 
 writeHashTag = (tagname) ->
+  console.log "Creating #{tagname}"
   return (eror, jadeat) ->
     if error?
       throw error
+    console.log "Writing #{tagname}, to #{htdocsbase.tweets}hashtags/#{tagname}.html"
     fs.writeFile "#{htdocsbase.tweets}hashtags/#{tagname}.html", jadeat
-      
+    console.log "Done with #{tagname}"
+
 
 str2hashtags = (str) ->
   ret = []
@@ -131,7 +134,7 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
   for tweet in tweets
     tweet2 = tweet
     tweet2.created_at = (new Date(tweet2.created_at)).toLocaleString()
-    console.log tweet2
+    #console.log tweet2
     curr_date = new Date(tweet2.created_at)
     if getShortSlugInfix(prev_date, 0) is getShortSlugInfix(curr_date, 0)
       prev_ord += 1
@@ -172,9 +175,9 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
 write_routes = () ->
   if stupid_count is 0
     fs.writeFile (htdocsbase.redirs + 'redirects.json'), JSON.stringify routes
-    console.log 'done'
+    #console.log 'done'
   else
-    console.log 'tick'
+    #console.log 'tick'
     setTimeout write_routes, 100
 
 setTimeout write_routes, 400
