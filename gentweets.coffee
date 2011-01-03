@@ -120,7 +120,7 @@ str2hashtags = (str) ->
 
 str2fancytext = (str) ->
   str.replace(/#[A-Za-z0-9]*/g, (tag) ->
-    "<a href=\"http://flaviusb.net/tweets/hashtags/#{tag}\" rel=\"tag\">#{tag}</a>")
+    "<a href=\"http://flaviusb.net/tweets/hashtags/#{tag[1..]}\" rel=\"tag\">#{tag}</a>")
 
 
 fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
