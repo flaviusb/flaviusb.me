@@ -122,61 +122,64 @@ str2fancytext = (str) ->
   str.replace(/#[A-Za-z0-9]*/g, (tag) ->
     "<a href=\"http://flaviusb.net/tweets/hashtags/#{tag[1..]}\" rel=\"tag\">#{tag}</a>")
 
-
-fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
+fs.readFile 'redirects.json', 'utf-8', (err, data) ->
   if err?
-    throw err
-  tweets = JSON.parse data
-  prev_date = new Date("1970-01-01")
-  prev_ord = 0
-  # Iterate forwards to make urls and add backlinks, then backwards to add forwardlinks and render
-  tweets.sort (l, r) ->
-    dl = new Date(l.created_at).valueOf()
-    dr = new Date(r.created_at).valueOf()
-    return dl - dr
-  prev_tweet = null
-  tweets2 = []
-  for tweet in tweets
-    tweet2 = tweet
-    tweet2.created_at = (new Date(tweet2.created_at)).toLocaleString()
-    #console.log tweet2
-    curr_date = new Date(tweet2.created_at)
-    if getShortSlugInfix(prev_date, 0) is getShortSlugInfix(curr_date, 0)
-      prev_ord += 1
-    else
-      prev_ord = 0
-    tweet2.tags      = str2hashtags tweet2.text
-    tweet2.fancytext = str2fancytext tweet2.text
-    tweet2.shorturl  = ("/t/" + getShortSlugInfix(curr_date, prev_ord))
-    tweet2.longurl   = getLongSlugInfix(curr_date, prev_ord)
-    for tag in tweet2.tags
-      if not tag_docs[tag]?
-        tag_docs[tag] = []
-      tag_docs[tag].push {url: tweet2.longurl, fancytext: tweet2.fancytext, date: tweet2.created_at}
-    if prev_tweet?
-      tweet2.prev_longurl = prev_tweet.longurl
-    else
-      tweet2.prev_longurl = ""
-    prev_date = curr_date
-    prev_tweet = tweet2
-    tweets2.push tweet2
-  tweets = tweets2
-  tweets.sort (l, r) ->
-    dl = new Date(l.created_at).valueOf()
-    dr = new Date(r.created_at).valueOf()
-    return dr - dl
-  prev_tweet = null
-  for tweet in tweets
-    if prev_tweet?
-      tweet.next_longurl = prev_tweet.longurl
-    else
-      tweet.next_longurl = ""
-    prev_tweet = tweet
-    stupid_count += 1
-    jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
-  for hash_name, hash_contents of tag_docs
-    jade.renderFile __dirname + "/hashtags.jade", { locals: { entries: hash_contents, title: hash_name } }, writeHashTag(hash_name)
-  stupid_count -= 1
+    console.log err
+  routes = JSON.parse(data)
+  fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
+    if err?
+      throw err
+    tweets = JSON.parse data
+    prev_date = new Date("1970-01-01")
+    prev_ord = 0
+    # Iterate forwards to make urls and add backlinks, then backwards to add forwardlinks and render
+    tweets.sort (l, r) ->
+      dl = new Date(l.created_at).valueOf()
+      dr = new Date(r.created_at).valueOf()
+      return dl - dr
+    prev_tweet = null
+    tweets2 = []
+    for tweet in tweets
+      tweet2 = tweet
+      tweet2.created_at = (new Date(tweet2.created_at)).toLocaleString()
+      #console.log tweet2
+      curr_date = new Date(tweet2.created_at)
+      if getShortSlugInfix(prev_date, 0) is getShortSlugInfix(curr_date, 0)
+        prev_ord += 1
+      else
+        prev_ord = 0
+      tweet2.tags      = str2hashtags tweet2.text
+      tweet2.fancytext = str2fancytext tweet2.text
+      tweet2.shorturl  = ("/t/" + getShortSlugInfix(curr_date, prev_ord))
+      tweet2.longurl   = getLongSlugInfix(curr_date, prev_ord)
+      for tag in tweet2.tags
+        if not tag_docs[tag]?
+          tag_docs[tag] = []
+        tag_docs[tag].push {url: tweet2.longurl, fancytext: tweet2.fancytext, date: tweet2.created_at}
+      if prev_tweet?
+        tweet2.prev_longurl = prev_tweet.longurl
+      else
+        tweet2.prev_longurl = ""
+      prev_date = curr_date
+      prev_tweet = tweet2
+      tweets2.push tweet2
+    tweets = tweets2
+    tweets.sort (l, r) ->
+      dl = new Date(l.created_at).valueOf()
+      dr = new Date(r.created_at).valueOf()
+      return dr - dl
+    prev_tweet = null
+    for tweet in tweets
+      if prev_tweet?
+        tweet.next_longurl = prev_tweet.longurl
+      else
+        tweet.next_longurl = ""
+      prev_tweet = tweet
+      stupid_count += 1
+      jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
+    for hash_name, hash_contents of tag_docs
+      jade.renderFile __dirname + "/hashtags.jade", { locals: { entries: hash_contents, title: hash_name } }, writeHashTag(hash_name)
+    stupid_count -= 1
 
 write_routes = () ->
   if stupid_count is 0
