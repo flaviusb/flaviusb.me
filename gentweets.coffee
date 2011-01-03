@@ -118,7 +118,7 @@ str2hashtags = (str) ->
       ret.push i[1..]
   ret
 
-str2fancystring = (str) ->
+str2fancytext = (str) ->
   str.gsub(/#[A-Za-z0-9]/g, (tag) ->
     "<a href=\"http://flaviusb.net/tweets/hashtags/#{tag}\" rel=\"tag\">#{tag}</a>")
 
