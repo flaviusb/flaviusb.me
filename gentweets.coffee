@@ -6,6 +6,8 @@ process.env.TZ = 'Pacific/Auckland'
 
 routes = []
 
+tag_docs = {}
+
 stupid_count = 1
 
 htdocsbase = {
@@ -97,6 +99,12 @@ writetweets = (redirfrom, redirend) ->
         if done?
           console.log done
           fs.writeFile (htdocsbase.tweets + redirend + "index.html"), jadedat
+
+writeHashTag = (tagname) ->
+  return (eror, jadeat) ->
+    if error?
+      throw error
+    fs.writeFile "#{htdocsbase.tweets}hashtags/#{tagname}.html", jadeat
       
 
 str2hashtags = (str) ->
@@ -132,6 +140,10 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
     tweet2.tags     = str2hashtags tweet2.text
     tweet2.shorturl = ("/t/" + getShortSlugInfix(curr_date, prev_ord))
     tweet2.longurl  = getLongSlugInfix(curr_date, prev_ord)
+    for tag in tweet2.tags
+      if not tag_docs[tag]?
+        tag_docs[tag] = []
+      tag_docs[tag].push {url: tweet2.longurl, text: tweet2.text, date: tweet2.created_at}
     if prev_tweet?
       tweet2.prev_longurl = prev_tweet.longurl
     else
@@ -153,6 +165,8 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
     prev_tweet = tweet
     stupid_count += 1
     jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
+  for hash_name, hash_contents in tag_docs
+    jade.renderFile __dirname + "/hashtags.jade", { locals: { entries: hash_contents, title: hash_name } }, writeHashTag(hash_name)
   stupid_count -= 1
 
 write_routes = () ->
