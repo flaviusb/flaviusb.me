@@ -19,7 +19,7 @@ html(lang='en')
             - var abs_url = "http://flaviusb.net/tweets/" + entry.url
               a(href=abs_url)= entry.date
           | &raquo; 
-          div= entry.text
+          div!= entry.fancytext
     p
       a(href="http://flaviusb.net") Home
       | &nbsp; | &nbsp; 

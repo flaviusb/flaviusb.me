@@ -118,6 +118,11 @@ str2hashtags = (str) ->
       ret.push i[1..]
   ret
 
+str2fancystring = (str) ->
+  str.gsub(/#[A-Za-z0-9]/g, (tag) ->
+    "<a href=\"http://flaviusb.net/tweets/hashtags/#{tag}\" rel=\"tag\">#{tag}</a>")
+
+
 fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
   if err?
     throw err
@@ -140,13 +145,14 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
       prev_ord += 1
     else
       prev_ord = 0
-    tweet2.tags     = str2hashtags tweet2.text
-    tweet2.shorturl = ("/t/" + getShortSlugInfix(curr_date, prev_ord))
-    tweet2.longurl  = getLongSlugInfix(curr_date, prev_ord)
+    tweet2.tags      = str2hashtags tweet2.text
+    tweet2.fancytext = str2fancytext tweet2.text
+    tweet2.shorturl  = ("/t/" + getShortSlugInfix(curr_date, prev_ord))
+    tweet2.longurl   = getLongSlugInfix(curr_date, prev_ord)
     for tag in tweet2.tags
       if not tag_docs[tag]?
         tag_docs[tag] = []
-      tag_docs[tag].push {url: tweet2.longurl, text: tweet2.text, date: tweet2.created_at}
+      tag_docs[tag].push {url: tweet2.longurl, fancytext: tweet2.fancytext, date: tweet2.created_at}
     if prev_tweet?
       tweet2.prev_longurl = prev_tweet.longurl
     else

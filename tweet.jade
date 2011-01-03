@@ -12,7 +12,7 @@ html(lang='en')
     link(href="http://flaviusb.net/atom.xml", type="application/atom+xml", rel="alternate", title="Blog Atom Feed")
     meta(http-equiv="content-type", content="application/xhtml+xml; charset=utf-8")
   body(class="highlight")
-    p(class="tweet")= text
+    p(class="tweet")!= fancytext
     p(class="tag")
       - each tag in tags
         - var tagurl = "http://flaviusb.net/tweets/hashtags/" + tag
