@@ -119,7 +119,7 @@ str2hashtags = (str) ->
   ret
 
 str2fancytext = (str) ->
-  str.replace(/#[A-Za-z0-9]/g, (tag) ->
+  str.replace(/#[A-Za-z0-9]*/g, (tag) ->
     "<a href=\"http://flaviusb.net/tweets/hashtags/#{tag}\" rel=\"tag\">#{tag}</a>")
 
 
