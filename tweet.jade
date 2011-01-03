@@ -21,6 +21,7 @@ html(lang='en')
       - else
         .grey
           abbr(title="Previous") ←
+      | &nbsp; 
       - if (next_longurl != "")
         - var total_next_longurl = "http://flaviusb.net/tweets/" + next_longurl
           a(href=total_next_longurl)
