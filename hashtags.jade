@@ -13,13 +13,13 @@ html(lang='en')
     meta(http-equiv="content-type", content="application/xhtml+xml; charset=utf-8")
   body.highlight
     ul.posts
-    - each entry in entries
-      li
-        span
-          - var abs_url = "http://flaviusb.net/tweets/" + entry.url
-            a(href=abs_url)= entry.date
-        | &raquo; 
-        div= entry.text
+      - each entry in entries
+        li
+          span
+            - var abs_url = "http://flaviusb.net/tweets/" + entry.url
+              a(href=abs_url)= entry.date
+          | &raquo; 
+          div= entry.text
     p
       a(href="http://flaviusb.net") Home
       | &nbsp; | &nbsp; 
