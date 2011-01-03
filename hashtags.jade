@@ -11,14 +11,15 @@ html(lang='en')
     link(rel="icon", href="http://flaviusb.net/favicon.ico", type="image/x-icon")
     link(href="http://flaviusb.net/atom.xml", type="application/atom+xml", rel="alternate", title="Blog Atom Feed")
     meta(http-equiv="content-type", content="application/xhtml+xml; charset=utf-8")
-  body#highlight
-    ul#posts
+  body.highlight
+    ul.posts
     - each entry in entries
       li
         span
-          a(href="http://flaviusb.net/tweets/#{entry.url}")= entry.date
+          - var abs_url = "http://flaviusb.net/tweets/" + entry.url
+            a(href=abs_url)= entry.date
         | &raquo; 
-        div entry.text
+        div= entry.text
     p
       a(href="http://flaviusb.net") Home
       | &nbsp; | &nbsp; 
