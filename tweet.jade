@@ -13,22 +13,25 @@ html(lang='en')
     meta(http-equiv="content-type", content="application/xhtml+xml; charset=utf-8")
   body(class="highlight")
     p(class="tweet")!= fancytext
-    p
+    .sidebox
       - if (prev_longurl != "")
         - var total_prev_longurl = "http://flaviusb.net/tweets/" + prev_longurl
-        a(href=total_prev_longurl) Prev
+          a(href=total_prev_longurl) 
+            abbr(title="Previous") ←
       - else
-        #grey Prev
-      | &nbsp; | &nbsp;
+        .grey
+          abbr(title="Previous") ←
       - if (next_longurl != "")
         - var total_next_longurl = "http://flaviusb.net/tweets/" + next_longurl
-        a(href=total_next_longurl) Next
+          a(href=total_next_longurl)
+            abbr(title="Next") →
       - else
-        #grey Next
-    - var total_longurl = "http://flaviusb.net/tweets/" + longurl
-      p#longurl #{total_longurl}
-    - var total_shorturl = "http://flaviusb.me" + shorturl
-      p#shorturl #{total_shorturl}
+        .grey
+          abbr(title="Next") →
+      - var total_longurl = "http://flaviusb.net/tweets/" + longurl
+        p.longurl #{total_longurl}
+      - var total_shorturl = "http://flaviusb.me" + shorturl
+        p.shorturl #{total_shorturl}
     p
       a(href="http://flaviusb.net") Home
       | &nbsp; | &nbsp; 
