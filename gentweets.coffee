@@ -168,7 +168,7 @@ fs.readFile 'flaviusb.json', 'utf-8', (err, data) ->
     prev_tweet = tweet
     stupid_count += 1
     jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
-  for hash_name, hash_contents in tag_docs
+  for hash_name, hash_contents of tag_docs
     jade.renderFile __dirname + "/hashtags.jade", { locals: { entries: hash_contents, title: hash_name } }, writeHashTag(hash_name)
   stupid_count -= 1
 
