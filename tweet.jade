@@ -12,7 +12,13 @@ html(lang='en')
     link(href="http://flaviusb.net/atom.xml", type="application/atom+xml", rel="alternate", title="Blog Atom Feed")
     meta(http-equiv="content-type", content="application/xhtml+xml; charset=utf-8")
   body(class="highlight")
-    p(class="tweet")!= fancytext
+    ul.posts    
+      li
+        span
+          - var abs_url = "http://flaviusb.net/tweets/" + entry.long
+            a(href=abs_url)= entry.created_at
+        | &raquo; 
+        div!= entry.fancytext
     .sidebox
       - if (prev_longurl != "")
         - var total_prev_longurl = "http://flaviusb.net/tweets/" + prev_longurl
