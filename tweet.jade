@@ -15,7 +15,7 @@ html(lang='en')
     ul.posts    
       li
         span
-          - var abs_url = "http://flaviusb.net/tweets/" + entry.long
+          - var abs_url = "http://flaviusb.net/tweets/" + longurl
             a(href=abs_url)= entry.created_at
         | &raquo; 
         div!= entry.fancytext
