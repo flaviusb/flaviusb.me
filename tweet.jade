@@ -16,7 +16,7 @@ html(lang='en')
       li
         span
           - var abs_url = "http://flaviusb.net/tweets/" + longurl
-            a(href=abs_url)= entry.created_at
+            a(href=abs_url)= created_at
         | &raquo; 
         div!= entry.fancytext
     .sidebox
