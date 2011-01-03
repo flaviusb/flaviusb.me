@@ -4,7 +4,7 @@ jade = require 'jade'
 
 process.env.TZ = 'Pacific/Auckland'
 
-routes = []
+routes = {}
 
 tag_docs = {}
 
@@ -91,7 +91,7 @@ writetweets = (redirfrom, redirend) ->
       #redirend  = getLongSlugInfix(orig_date, ord)
       #console.log redirfrom
       #console.log redirend
-      routes.push [redirfrom, (redirbase + redirend)]
+      routes[redirfrom] = (redirbase + redirend)
       stupid_count -= 1
       #console.log jadedat
       mkdirs (htdocsbase.tweets + redirend), (err, done) ->

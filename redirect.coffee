@@ -32,7 +32,7 @@ done = (req, res, url) ->
     res.write data
     res.end()
 
-routes = []
+routes = {}
 
 regenRoutes = (req, res) ->
   fs.readFile 'redirects.json', 'utf-8', (err, data) ->
@@ -51,10 +51,9 @@ choose_path = (req, res) ->
     if url is i
       j req, res
       return
-  for [i, j] in routes
-    if url is i
-      threeohone(req, res, j)
-      return
+  if routes[url]?
+    threeohone(req, res, routes[url])
+    return
   fourohfour(req, res, url)
 
 server = http.createServer (req, res) ->
