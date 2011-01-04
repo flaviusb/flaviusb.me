@@ -164,7 +164,7 @@ fs.readFile 'redirects.json', 'utf-8', (err, data) ->
         if not tag_docs[tag]?
           tag_docs[tag] = []
         tag_docs[tag].push {url: tweet2.longurl, fancytext: tweet2.fancytext, date: tweet2.created_at}
-      tweet_index.push {url: tweet2.longurl, fancytext: tweet2.fancytext, date: tweet2.created_at}
+      tweet_index.unshift {url: tweet2.longurl, fancytext: tweet2.fancytext, date: tweet2.created_at}
       if prev_tweet?
         tweet2.prev_longurl = prev_tweet.longurl
       else
