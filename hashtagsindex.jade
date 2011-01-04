@@ -17,7 +17,7 @@ html(lang='en')
         li
           h4
             - var abs_url = "http://flaviusb.net/tweets/hashtags/" + key
-              a(href=abs_url)= entry.text
+              a(href=abs_url)= key
           | &raquo; 
           - var num = val.length
             div= "(#{num})"
