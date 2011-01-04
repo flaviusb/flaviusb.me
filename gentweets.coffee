@@ -117,6 +117,13 @@ writeIndex =  (error, jadeat) ->
   fs.writeFile "#{htdocsbase.tweets}index.html", jadeat
   console.log "Done with index"
 
+writeHashIndex =  (error, jadeat) ->
+  if error?
+    throw error
+  console.log "Writing index of hash tags"
+  fs.writeFile "#{htdocsbase.tweets}/hashtags/index.html", jadeat
+  console.log "Done with index of hash tags"
+
 
 str2hashtags = (str) ->
   ret = []
@@ -188,6 +195,7 @@ fs.readFile 'redirects.json', 'utf-8', (err, data) ->
       jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
     for hash_name, hash_contents of tag_docs
       jade.renderFile __dirname + "/hashtags.jade", { locals: { entries: hash_contents, title: hash_name } }, writeHashTag(hash_name)
+    jade.renderFile __dirname + "/hashtagsindex.jade", { locals: { entries: tag_docs, title: "Index of all hash tags" } }, writeHashIndex
     jade.renderFile __dirname + "/tweetindex.jade", { locals: { entries: tweet_index, title: "Index of all tweets" } }, writeIndex
     stupid_count -= 1
 

@@ -1,7 +1,7 @@
 !!! 5
 html(lang='en')
   head
-    title ##{title}
+    title #{title}
     link(rel="stylesheet", type="text/css", href="http://flaviusb.net/style.css")
     link(rel="stylesheet", type="text/css", href="http://flaviusb.net/container.css")
     link(rel="stylesheet", type="text/css", href="http://flaviusb.net/mono.css")
@@ -13,13 +13,14 @@ html(lang='en')
     meta(http-equiv="content-type", content="application/xhtml+xml; charset=utf-8")
   body.highlight
     ul.posts
-      - each entry in entries
+      - each val, key in entries
         li
-          span
-            - var abs_url = "http://flaviusb.net/tweets/hashtags/" + entry.url
-              a(href=abs_url)= entry.
+          h4
+            - var abs_url = "http://flaviusb.net/tweets/hashtags/" + key
+              a(href=abs_url)= entry.text
           | &raquo; 
-          div!= entry.fancytext
+          - var num = val.length
+            div= "(#{num})"
     p
       a(href="http://flaviusb.net") Home
       | &nbsp; | &nbsp; 
