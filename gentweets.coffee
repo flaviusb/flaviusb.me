@@ -7,6 +7,7 @@ process.env.TZ = 'Pacific/Auckland'
 routes = {}
 
 tag_docs = {}
+tweet_index = []
 
 stupid_count = 1
 
@@ -102,12 +103,19 @@ writetweets = (redirfrom, redirend) ->
 
 writeHashTag = (tagname) ->
   console.log "Creating #{tagname}"
-  return (eror, jadeat) ->
+  return (error, jadeat) ->
     if error?
       throw error
     console.log "Writing #{tagname}, to #{htdocsbase.tweets}hashtags/#{tagname}.html"
     fs.writeFile "#{htdocsbase.tweets}hashtags/#{tagname}.html", jadeat
     console.log "Done with #{tagname}"
+
+writeIndex =  (error, jadeat) ->
+  if error?
+    throw error
+  console.log "Writing index of tweets"
+  fs.writeFile "#{htdocsbase.tweets}index.html", jadeat
+  console.log "Done with index"
 
 
 str2hashtags = (str) ->
@@ -156,6 +164,7 @@ fs.readFile 'redirects.json', 'utf-8', (err, data) ->
         if not tag_docs[tag]?
           tag_docs[tag] = []
         tag_docs[tag].push {url: tweet2.longurl, fancytext: tweet2.fancytext, date: tweet2.created_at}
+      tweet_index.push {url: tweet2.longurl, fancytext: tweet2.fancytext, date: tweet2.created_at}
       if prev_tweet?
         tweet2.prev_longurl = prev_tweet.longurl
       else
@@ -179,6 +188,7 @@ fs.readFile 'redirects.json', 'utf-8', (err, data) ->
       jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
     for hash_name, hash_contents of tag_docs
       jade.renderFile __dirname + "/hashtags.jade", { locals: { entries: hash_contents, title: hash_name } }, writeHashTag(hash_name)
+    jade.renderFile __dirname + "/tweetindex.jade", { locals: { entries: tag_index, title: "Index of all tweets" } }, writeIndex
     stupid_count -= 1
 
 write_routes = () ->

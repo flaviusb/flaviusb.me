@@ -1,7 +1,7 @@
 !!! 5
 html(lang='en')
   head
-    title Tweet on #{created_at}
+    title ##{title}
     link(rel="stylesheet", type="text/css", href="http://flaviusb.net/style.css")
     link(rel="stylesheet", type="text/css", href="http://flaviusb.net/container.css")
     link(rel="stylesheet", type="text/css", href="http://flaviusb.net/mono.css")
@@ -11,34 +11,15 @@ html(lang='en')
     link(rel="icon", href="http://flaviusb.net/favicon.ico", type="image/x-icon")
     link(href="http://flaviusb.net/atom.xml", type="application/atom+xml", rel="alternate", title="Blog Atom Feed")
     meta(http-equiv="content-type", content="application/xhtml+xml; charset=utf-8")
-  body(class="highlight")
-    ul.posts    
-      li
-        span
-          - var abs_url = "http://flaviusb.net/tweets/" + longurl
-            a(href=abs_url)= created_at
-        | &raquo; 
-        div!= fancytext
-    .sidebox
-      - if (prev_longurl != "")
-        - var total_prev_longurl = "http://flaviusb.net/tweets/" + prev_longurl
-          a(href=total_prev_longurl) 
-            abbr(title="Previous") ←
-      - else
-        .grey
-          abbr(title="Previous") ←
-      | &nbsp; 
-      - if (next_longurl != "")
-        - var total_next_longurl = "http://flaviusb.net/tweets/" + next_longurl
-          a(href=total_next_longurl)
-            abbr(title="Next") →
-      - else
-        .grey
-          abbr(title="Next") →
-      - var total_longurl = "http://flaviusb.net/tweets/" + longurl
-        p.longurl #{total_longurl}
-      - var total_shorturl = "http://flaviusb.me" + shorturl
-        p.shorturl #{total_shorturl}
+  body.highlight
+    ul.posts
+      - each entry in entries
+        li
+          span
+            - var abs_url = "http://flaviusb.net/tweets/hashtags/" + entry.url
+              a(href=abs_url)= entry.
+          | &raquo; 
+          div!= entry.fancytext
     p
       a(href="http://flaviusb.net") Home
       | &nbsp; | &nbsp; 
