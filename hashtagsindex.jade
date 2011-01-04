@@ -15,12 +15,11 @@ html(lang='en')
     ul.posts
       - each val, key in entries
         li
-          h4
-            - var abs_url = "http://flaviusb.net/tweets/hashtags/" + key
-              a(href=abs_url)= key
+          - var abs_url = "http://flaviusb.net/tweets/hashtags/" + key
+            a(href=abs_url)= key
           | &raquo; 
           - var num = val.length
-            div= "(#{num})"
+            span (#{num})
     p
       a(href="http://flaviusb.net") Home
       | &nbsp; | &nbsp; 
