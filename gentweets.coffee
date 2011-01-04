@@ -188,7 +188,7 @@ fs.readFile 'redirects.json', 'utf-8', (err, data) ->
       jade.renderFile __dirname + "/tweet.jade", { locals: tweet }, writetweets(tweet.shorturl, tweet.longurl)
     for hash_name, hash_contents of tag_docs
       jade.renderFile __dirname + "/hashtags.jade", { locals: { entries: hash_contents, title: hash_name } }, writeHashTag(hash_name)
-    jade.renderFile __dirname + "/tweetindex.jade", { locals: { entries: tag_index, title: "Index of all tweets" } }, writeIndex
+    jade.renderFile __dirname + "/tweetindex.jade", { locals: { entries: tweet_index, title: "Index of all tweets" } }, writeIndex
     stupid_count -= 1
 
 write_routes = () ->
