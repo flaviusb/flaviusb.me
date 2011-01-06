@@ -44,9 +44,9 @@ fs.readFile 'conf.json', 'utf-8', (err, data) ->
       fancytext: str2fancytext process.argv[2]
       tags: str2hashtags process.argv[2]
     }
-    tweets.unshift newtweet
-    fs.writeFile (__dirname + "/flaviusb.json"), JSON.stringify(tweets), 'utf-8'
-    twit.post '/statuses/update.json', { status: querystring.escape(newtweet.text) }, (err) ->
+    #tweets.unshift newtweet
+    #fs.writeFile (__dirname + "/flaviusb.json"), JSON.stringify(tweets), 'utf-8'
+    twit.post '/statuses/update.json', { status: newtweet.text }, (err) ->
       if err?
         console.log err
       console.log 'foo'
