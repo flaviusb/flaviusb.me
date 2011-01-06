@@ -46,7 +46,7 @@ fs.readFile 'conf.json', 'utf-8', (err, data) ->
     }
     #tweets.unshift newtweet
     #fs.writeFile (__dirname + "/flaviusb.json"), JSON.stringify(tweets), 'utf-8'
-    twit.post '/statuses/update.json', { status: newtweet.text }, (err) ->
+    twit.updateStatus newtweet.text, (err) ->
       if err?
         console.log err
       console.log 'foo'
