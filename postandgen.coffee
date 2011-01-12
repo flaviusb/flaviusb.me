@@ -3,6 +3,7 @@ twitter = require('twitter')
 fs = require 'fs'
 querystring = require 'querystring'
 process.env.TZ = 'Pacific/Auckland'
+path = require 'path'
 jade = require 'jade'
 
 routes = {}
@@ -225,8 +226,8 @@ fs.readFile 'conf.json', 'utf-8', (err, data) ->
           prev_tweet = null
           shorttext = fulltext
           if needshorten
-            length_left = 139 - (("... flaviusb.me" + tweets[0].shorturl).length)
-            shorttext = fulltext[0...length_left] + ("... flaviusb.me" + tweets[0].shorturl)
+            length_left = 132 - (("... http://flaviusb.me" + tweets[0].shorturl).length)
+            shorttext = fulltext[0...length_left] + ("... http://flaviusb.me" + tweets[0].shorturl)
           twit.updateStatus shorttext, (err) ->
             if err?
               console.log err
@@ -254,5 +255,3 @@ fs.readFile 'conf.json', 'utf-8', (err, data) ->
           setTimeout write_routes, 100
 
       setTimeout write_routes, 400
-
-
