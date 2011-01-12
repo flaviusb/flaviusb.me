@@ -1,7 +1,7 @@
 #/bin/bash
 
-coffee -c post.coffee
-node post.js "$1"
+coffee -c postandgen.coffee
+node postandgen.js "$1"
 git commit flaviusb.json -m "Automated commit of generated tweet from flaviusb.me."
-coffee gentweets.coffee
+#coffee gentweets.coffee
 curl http://flaviusb.me/command/regenroutes
