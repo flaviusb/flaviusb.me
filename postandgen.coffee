@@ -224,7 +224,7 @@ fs.readFile 'conf.json', 'utf-8', (err, data) ->
             return dr - dl
           prev_tweet = null
           shorttext = fulltext
-          if needsshorten
+          if needshorten
             length_left = 139 - (("... flaviusb.me" + tweets[0].shorturl).length)
             shorttext = fulltext[0...length_left] + ("... flaviusb.me" + tweets[0].shorturl)
           twit.updateStatus shorttext, (err) ->
