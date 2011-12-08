@@ -22,6 +22,8 @@ if not process.argv[2]?
   console.log "No post provided. Not posting anything."
   process.exit(1)
 
+fulltext = process.argv[2]
+
 fs.readFile 'conf.json', 'utf-8', (err, data) ->
   if err?
     console.log err
@@ -40,13 +42,13 @@ fs.readFile 'conf.json', 'utf-8', (err, data) ->
     tweets = JSON.parse data
     newtweet = {
       created_at: Date(Date.now).toLocaleString()
-      text: process.argv[2]
-      fancytext: str2fancytext process.argv[2]
-      tags: str2hashtags process.argv[2]
+      text: fulltext
+      fancytext: str2fancytext fulltext
+      tags: str2hashtags fulltext
     }
     tweets.unshift newtweet
     fs.writeFile (__dirname + "/flaviusb.json"), JSON.stringify(tweets), 'utf-8'
-    twit.updateStatus newtweet.text, (err) ->
+    twit.updateStatus shorttext, (err) ->
       if err?
         console.log err
       console.log 'foo'
