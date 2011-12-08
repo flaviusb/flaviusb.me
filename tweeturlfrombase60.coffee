@@ -4,6 +4,8 @@ querystring = require 'querystring'
 process.env.TZ = 'Pacific/Auckland'
 path = require 'path'
 jade = require 'jade'
+http        = require 'http'
+urls        = require 'url'
 
 #thing = "{\n" + (("  \"" + i + "\": " + j) for i,j in space).join("\n") + "\n}\n"
 
