@@ -103,10 +103,10 @@ threeohone = (req, res, url) ->
 choose_path = (req, res) ->
   url = urls.parse(req.url).pathname
   urlparts = url.split("/")
-  if urlparts.length < 5 or urlparts[1] != "t"
+  if urlparts.length < 4 or urlparts[1] != "t"
     fourohfour(req, res, url)
   else
-    threeohone(req, res, getLongSlug(urlparts[3], urlparts[4]))
+    threeohone(req, res, getLongSlug(urlparts[2], urlparts[3]))
 
 server = http.createServer (req, res) ->
   choose_path(req, res)
