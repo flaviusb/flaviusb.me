@@ -76,7 +76,7 @@ frombase60 = (str) ->
   foo = 0
   len = str.length - 1
   for i, idx in str
-    foo += (conv[i] * Math.pow(10, len - idx))
+    foo += (conv[i] * Math.pow(60, len - idx))
   return foo
 
 
