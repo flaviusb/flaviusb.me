@@ -84,7 +84,7 @@ days2date = (days) -> new Date(days * 86400 * 1000)
 
 getLongSlug = (date, ord) ->
    fulldate = days2date(frombase60(date))
-   "http://flaviusb.net/tweets/#{fulldate.getFullYear()}/#{fulldate.getMonth()}/#{fulldate.getDate()}/#{frombase60(ord)}"
+   "http://flaviusb.net/tweets/#{fulldate.getFullYear()}/#{fulldate.getMonth() + 1}/#{fulldate.getDate()}/#{frombase60(ord)}"
 
 #leaps = (days) -> 
 #days2year = (days) -> Math.floor(days / 365) + 1970 + leaps
