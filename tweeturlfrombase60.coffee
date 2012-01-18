@@ -83,7 +83,7 @@ frombase60 = (str) ->
 days2date = (days) -> new Date(days * 86400 * 1000)
 
 getLongSlug = (date, ord) ->
-   fulldate = days2date(frombase60(date))
+   fulldate = days2date(frombase60(date) - 1) #Get around fencepost error in an ugly way
    "http://flaviusb.net/tweets/#{fulldate.getFullYear()}/#{fulldate.getMonth() + 1}/#{fulldate.getDate()}/#{frombase60(ord)}"
 
 #leaps = (days) -> 
